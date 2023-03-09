@@ -17,10 +17,13 @@ app.use(cors({ credentials: true, origin: 'http://localhost:8080' }))// porta 30
 //rotas
 const AdminRoutes = require('./routes/AdminRoutes')
 app.use('/', AdminRoutes)
-
+//servidor
 const AlunosRoutes = require('./routes/AlunoRoutes')
 app.use('/aluno', AlunosRoutes)
-//servidor
+
+const ProfRoutes = require('./routes/ProfRoutes')
+app.use('/professor', ProfRoutes)
+
 app.listen(5000,()=>{
     console.log(`API rodando na porta 5000`)
 })
