@@ -1,15 +1,15 @@
 const router = require("express").Router();
 
-const ProfController = require("../controllers/ProfController");
+const ProfessorController = require("../controllers/ProfessorController");
 const checarToken = require("../helpers/checar-token")
 
-router.post("/registrarProf", ProfController.registrarProf)
-router.post('/loginProf', ProfController.loginProf)
-router.get('/checarProf',checarToken, ProfController.checarProf)
-router.get('/:idProf', ProfController.buscarProfId)
-router.get('/Prof', ProfController.listarProf)
-router.delete('/:idProf', ProfController.removerProf)
-router.patch('/editar/:idProf', ProfController.editarProf)
+router.post("/registrarProf", ProfessorController.registrarProf)
+router.post('/loginProf', ProfessorController.loginProf)
+router.get('/checarProf',checarToken, ProfessorController.checarProf)
+router.get('/:idProf', ProfessorController.buscarProfId)
+router.get('/Prof', ProfessorController.listarProf)
+router.delete('/:idProf', ProfessorController.removerProf)
+router.patch('/editar/:idProf', ProfessorController.editarProf)
 
 
 module.exports = router
