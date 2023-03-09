@@ -18,8 +18,8 @@ app.use(cors({ credentials: true, origin: 'http://localhost:8080' }))// porta 30
 const AdminRoutes = require('./routes/AdminRoutes')
 app.use('/', AdminRoutes)
 //servidor
-const AlunosRoutes = require('./routes/AlunoRoutes')
-app.use('/aluno', AlunosRoutes)
+const AlunoRoutes = require('./routes/AlunoRoutes')
+app.use('/aluno', AlunoRoutes)
 
 const ProfessorRoutes = require('./routes/ProfessorRoutes')
 app.use('/professor', ProfessorRoutes)
