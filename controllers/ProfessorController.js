@@ -2,14 +2,14 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const ObjectId = require('mongoose').Types.ObjectId
 
-const Prof = require('../models/Prof')
+const Professor = require('../models/Professor')
 const criarAdminToken = require('../helpers/criar-adm-token')
 const extrairToken = require('../helpers/extrair-token')
 const extrairAdminToken = require('../helpers/extrair-admin-token')
 
-module.exports = class ProfController{
+module.exports = class ProfessorController{
     
-    static async registrar(req, res){
+    static async registrarProf(req, res){
         const { nome, email, senha, confirmarSenha } = req.body
         
         if(!nome){res.status(422).json({ message: "O nome é obrigatório!!!" })
@@ -28,14 +28,14 @@ module.exports = class ProfController{
         if(senha !== confirmarSenha){res.status(422).json({message: "Senhas não conferem!"})
             return
         }
-        const existeProf = await Prof.findOne({ email: email })
+        const existeProf = await Professor.findOne({ email: email })
         if(existeProf){res.status(422).json({ message: 'Por favor, utilize outro e-mail!' })
             return
         }
         
         const salt = await bcrypt.genSalt(10)
         const senhaHash = await bcrypt.hash(senha, salt)
-        const prof = new Prof({
+        const prof = new Professor({
             nome: nome,
             email: email,
             senha: senhaHash
@@ -56,7 +56,7 @@ module.exports = class ProfController{
         }
     }
 
-    static async login(req, res){
+    static async loginProf(req, res){
         const { email, senha } = req.body
         if (!email) {res.status(422).json({ message: 'O e-mail é obrigatório!' })
             return
@@ -64,7 +64,7 @@ module.exports = class ProfController{
         if (!senha) {res.status(422).json({ message: 'A senha é obrigatória!' })
             return
         }
-        const prof = await Prof.findOne({ email: email })
+        const prof = await Professor.findOne({ email: email })
         if (!prof){
             return res.status(422).json({ 
                 message: 'E-mail não cadastrado' })
@@ -77,13 +77,13 @@ module.exports = class ProfController{
         await criarAdminToken(prof, req, res)
     }
 
-    static async checarUsuario(req, res){
+    static async checarProf(req, res){
         let atualProf
         console.log(req.headers.authorization)
         if (req.headers.authorization) {
             const token = extrairToken(req)
             const decodificarToken = jwt.verify(token, 'nossosecret')
-            atualProf = await Prof.findById(decodificarToken.id)
+            atualProf = await Professor.findById(decodificarToken.id)
             atualProf.senha = undefined
         }else{
             atualProf = null
@@ -93,7 +93,7 @@ module.exports = class ProfController{
 
     static async buscarProfId(req, res){
         const id = req.params.id
-        const prof = await Prof.findById(id).select('-senha')
+        const prof = await Professor.findById(id).select('-senha')
         if(!prof){
             res.status(422).json({ message: 'Professor não encontrado!' })
             return
@@ -102,7 +102,7 @@ module.exports = class ProfController{
     }
 
     static async listarProf(req, res){
-        const prof = await Prof.find().sort('-createdAt')
+        const prof = await Professor.find().sort('-createdAt')
         res.status(200).json({prof: prof})
     }
 
@@ -112,12 +112,12 @@ module.exports = class ProfController{
             res.status(422).json({ message: 'ID inválido!' })
             return
         }
-        const prof = await Prof.findOne({ _id: id })
+        const prof = await Professor.findOne({ _id: id })
         if (!prof) {
           res.status(404).json({ message: 'Professor não encontrado!' })
           return
         }
-        await Prof.findByIdAndRemove(id)
+        await Professor.findByIdAndRemove(id)
         res.status(200).json({ message: 'Professor removido com sucesso!' })
     }
     static async editarProf(req, res){
@@ -131,7 +131,7 @@ module.exports = class ProfController{
         if (!email) {res.status(422).json({ message: 'O e-mail é obrigatório!' })
             return
         }
-        const profExistente = await Prof.findOne({ email: email })
+        const profExistente = await Professor.findOne({ email: email })
         if (prof.email !== email && profExistente) {
             res.status(422).json({ message: 'Por favor, utilize outro e-mail!' })
             return
