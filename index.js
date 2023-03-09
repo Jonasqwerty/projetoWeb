@@ -21,8 +21,8 @@ app.use('/', AdminRoutes)
 const AlunosRoutes = require('./routes/AlunoRoutes')
 app.use('/aluno', AlunosRoutes)
 
-const ProfRoutes = require('./routes/ProfRoutes')
-app.use('/professor', ProfRoutes)
+const ProfessorRoutes = require('./routes/ProfessorRoutes')
+app.use('/professor', ProfessorRoutes)
 
 app.listen(5000,()=>{
     console.log(`API rodando na porta 5000`)
